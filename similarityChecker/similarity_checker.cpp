@@ -8,14 +8,14 @@ class SimilarityChecker {
 public:
     static const int MAX_LENGTH_SCORE = 60;
 
-    SimilarityChecker(const std::string& source) : original{ source } {};
+    SimilarityChecker() = default;
     
-    int getLengthScore(const std::string& target) {
-        if (target == original) return MAX_LENGTH_SCORE;
-        if (isTargetStringEmpty(target)) return 0;
+    int getLengthScore(const std::string& str1, const std::string& str2) {
+        if (str1 == str2) return MAX_LENGTH_SCORE;
+        if (hasEmptyString(str1, str2)) return 0;
         
-        double length_longer = original.length();
-        double length_shorter = target.length();
+        size_t length_longer = str1.length();
+        size_t length_shorter = str2.length();
         if (length_shorter > length_longer) std::swap(length_longer, length_shorter);
 
         if (isLengthDiffMoreThanDouble(length_longer, length_shorter)) return 0;
@@ -24,21 +24,22 @@ public:
     }
 
 private: 
-    const std::string original;
-    const std::string EMPTY_TARGET = "";
+    const std::string EMPTY_STRING = "";
 
-    bool isTargetStringEmpty(const std::string& target)
+    bool hasEmptyString(const std::string& str1, const std::string& str2)
     {
-        return target == EMPTY_TARGET;
+        return (str1 == EMPTY_STRING || str2 == EMPTY_STRING);
     }
 
-    bool isLengthDiffMoreThanDouble(double length_longer, double length_shorter)
+    bool isLengthDiffMoreThanDouble(size_t length_longer, size_t length_shorter)
     {
         return (length_longer / length_shorter) >= 2;
     }
 
-    double getPartialLengthScore(double length_shorter, double length_longer)
+    double getPartialLengthScore(size_t length_shorter, size_t length_longer)
     {
-        return ((length_shorter * 2 - length_longer) / length_shorter) * MAX_LENGTH_SCORE;
+        double shorter = static_cast<double>(length_shorter);
+        double longer = static_cast<double>(length_longer);
+        return ((shorter * 2 - longer) / shorter) * MAX_LENGTH_SCORE;
     }
 };

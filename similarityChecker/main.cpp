@@ -3,22 +3,22 @@
 
 class SimilarityCheckerFixture : public testing::Test {
 public:
-    SimilarityChecker checker{ "ABC" };
+    SimilarityChecker checker;
 
-    void checkLengthSimilarity(int expectedScore, const std::string& target) {
-        int actual = checker.getLengthScore(target);
+    void checkLengthSimilarity(int expectedScore, const std::string& str1, const std::string& str2) {
+        int actual = checker.getLengthScore(str1, str2);
         EXPECT_EQ(expectedScore, actual);
     }
 
 };
 
 TEST_F(SimilarityCheckerFixture, length) {
-    checkLengthSimilarity(SimilarityChecker::MAX_LENGTH_SCORE, "ABC");
-    checkLengthSimilarity(0, "ABCABCA");
-    checkLengthSimilarity(40, "DEFE");
-    checkLengthSimilarity(0, "A");
-    checkLengthSimilarity(20, "ZZZXE");
-    checkLengthSimilarity(0, "");
+    checkLengthSimilarity(SimilarityChecker::MAX_LENGTH_SCORE, "ABC", "ABC");
+    checkLengthSimilarity(0, "ABC", "ABCABCA");
+    checkLengthSimilarity(40, "ABC", "DEFE");
+    checkLengthSimilarity(0, "ABC", "A");
+    checkLengthSimilarity(20, "ABC", "ZZZXE");
+    checkLengthSimilarity(0, "ABC", "");
 }
 
 //TEST_F(SimilarityCheckerFixture, letterMatch) {
